@@ -63,14 +63,15 @@ class TypeTray(_TopEdge):
     """Type tray - allows only continuous walls"""
 
     ui_group = "Tray"
+    top_edge = "F"
+    bottom_edge = "h"
 
     def __init__(self) -> None:
         Boxes.__init__(self)
         self.addTopEdgeSettings(fingerjoint={"surroundingspaces": 0.5, "edge_width": 5},
                                 roundedtriangle={"outset" : 1})
         self.addSettingsArgs(LidSettings)
-        self.buildArgParser("sx", "sy", "h", "hi", "outside", "bottom_edge",
-                            "top_edge")
+        self.buildArgParser("sx", "sy", "h", "hi", "outside")
         self.argparser.add_argument(
             "--back_height",  action="store", type=float, default=0.0,
             help="additional height of the back wall - e top edge only")
@@ -227,7 +228,7 @@ class TypeTray(_TopEdge):
         self.addPart(p)
 
         # outer walls
-        b = self.bottom_edge
+        b = "h"
         tl, tb, tr, tf = self.topEdges(self.top_edge)
         self.closedtop = self.top_edge in "fFhŠ"
 
@@ -350,11 +351,11 @@ class TypeTray(_TopEdge):
                 move="up", label="right side")
         else:
             self.rectangularWall(
-                y, h, [b, "f", tl, "f"], callback=[self.yHoles, ],
+                y, h, [b, "f", "f", "f"], callback=[self.yHoles, ],
                 ignore_widths=[6] if self.handle else [1, 6],
                 move="up", label="left side")
             self.rectangularWall(
-                y, h, [b, "f", tr, "f"],
+                y, h, [b, "f", "f", "f"],
                 callback=[self.mirrorX(self.yHoles, y), ],
                 ignore_widths=[1] if self.handle else [1, 6],
                 move="up", label="right side")
