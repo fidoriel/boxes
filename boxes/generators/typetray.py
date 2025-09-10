@@ -66,7 +66,7 @@ class TypeTray(_TopEdge):
 
     def __init__(self) -> None:
         Boxes.__init__(self)
-        self.addTopEdgeSettings(fingerjoint={"surroundingspaces": 0.5},
+        self.addTopEdgeSettings(fingerjoint={"surroundingspaces": 0.5, "edge_width": 5},
                                 roundedtriangle={"outset" : 1})
         self.addSettingsArgs(LidSettings)
         self.buildArgParser("sx", "sy", "h", "hi", "outside", "bottom_edge",
@@ -320,9 +320,14 @@ class TypeTray(_TopEdge):
 
         # top / lid
         if self.closedtop and sameh:
-            e = "FFFF" if self.top_edge == "f" else "ffff"
-            self.rectangularWall(x, y, e, callback=[
-                self.xSlots, self.ySlots], move="up", label="top")
+            if self.top_edge == "f":
+                e = "FFFF" 
+            elif self.top_edge == "h":
+                e = "hhhh"
+            else:
+                e = "ffff"
+            self.rectangularWall(x, y, "hhhh", callback=[
+                self.xSlots, self.ySlots], move="up", label="top")   
         else:
             self.drawLid(x, y, self.top_edge)
         self.lid(x, y, self.top_edge)
